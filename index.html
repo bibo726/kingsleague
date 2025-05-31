@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kings League - Confronto Squadre</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="hero-bg-texture"></div>
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                Kings League
+            </a>
+            <div class="header-controls">
+                <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-banner">
+        <div class="hero-content">
+            <h1 class="hero-title">Kings League World Cup</h1>
+            <p class="hero-subtitle">Il confronto definitivo tra le squadre della Kings League</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <section class="mode-selector">
+            <button id="modeCompare" class="mode-btn active">
+                <i class="fas fa-users"></i> Confronto Ruoli
+            </button>
+            <button id="modeScouting" class="mode-btn">
+                <i class="fas fa-search"></i> Scouting
+            </button>
+        </section>
+
+        <section class="team-selectors">
+            <select id="team1" class="team-select">
+                <option value="">Seleziona squadra 1</option>
+            </select>
+            <div class="vs-badge">VS</div>
+            <select id="team2" class="team-select">
+                <option value="">Seleziona squadra 2</option>
+            </select>
+        </section>
+
+        <!-- Modalità Confronto Ruoli -->
+        <section id="role-battle-container" class="role-battle-container" style="display: none;">
+            <h2 id="current-role-title" class="role-title">Seleziona le squadre per iniziare</h2>
+            <div id="role-battle-players" class="role-battle-players"></div>
+            <div id="role-battle-actions" class="role-battle-actions"></div>
+        </section>
+
+        <section id="role-battle-summary" class="role-battle-summary" style="display: none;">
+            <h2>Riepilogo Confronto</h2>
+            <div id="role-battle-summary-list"></div>
+            <button id="restartRoleBattle" class="vote-btn">
+                <i class="fas fa-redo"></i> Ricomincia
+            </button>
+        </section>
+
+        <!-- Modalità Scouting -->
+        <section id="scouting-container" class="scouting-container" style="display: none;">
+            <h2>Scouting Giocatori</h2>
+            <div id="scouting-players-list" class="scouting-players-list"></div>
+            
+            <section class="dream-team">
+                <h2>La Tua Squadra Ideale</h2>
+                <div id="dream-team-list" class="dream-team-list"></div>
+            </section>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
