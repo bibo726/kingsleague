@@ -1,637 +1,71 @@
-/* PALETTE KINGS LEAGUE */
-:root {
-    --bg-primary: #181818;
-    --bg-secondary: #232323;
-    --text-primary: #f7f7f7;
-    --text-secondary: #b3b3b3;
-    --accent-gold: #ffb300;
-    --accent-orange: #ff6f00;
-    --accent-red: #e53935;
-    --accent-dark: #111111;
-    --border-color: #333;
-    --card-shadow: 0 4px 24px 0 rgba(255, 179, 0, 0.08), 0 1.5px 8px 0 rgba(0,0,0,0.5);
-    --transition-speed: 0.3s;
-  }
-  
-  [data-theme="dark"] {
-    --bg-primary: #181818;
-    --bg-secondary: #232323;
-    --text-primary: #f7f7f7;
-    --text-secondary: #b3b3b3;
-    --accent-gold: #ffb300;
-    --accent-orange: #ff6f00;
-    --accent-red: #e53935;
-    --accent-dark: #111111;
-    --border-color: #333;
-    --card-shadow: 0 4px 24px 0 rgba(255, 179, 0, 0.08), 0 1.5px 8px 0 rgba(0,0,0,0.5);
-  }
-  
-  /* Reset e stili base */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #181818 0%, #232323 100%);
-    color: var(--text-primary);
-    line-height: 1.6;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-  
-  /* Header */
-  .header {
-    background: var(--bg-secondary);
-    padding: 1rem 0;
-    box-shadow: var(--card-shadow);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    border-bottom: 2px solid var(--accent-gold);
-  }
-  
-  .header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-  }
-  
-  .logo {
-    font-size: 1.7rem;
-    font-weight: bold;
-    color: var(--accent-gold);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    letter-spacing: 2px;
-    text-shadow: 0 2px 8px #ffb30044;
-  }
-  
-  .logo i {
-    font-size: 2rem;
-    color: var(--accent-orange);
-    filter: drop-shadow(0 0 6px #ffb300);
-  }
-  
-  /* Team Selectors */
-  .team-selectors {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    margin: 2rem 0;
-    flex-wrap: wrap;
-  }
-  
-  .team-select {
-    min-width: 200px;
-    padding: 0.8rem;
-    border: 2px solid var(--accent-gold);
-    border-radius: 8px;
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    font-size: 1rem;
-    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
-    box-shadow: 0 0 0 2px transparent;
-  }
-  
-  .team-select:focus {
-    border-color: var(--accent-orange);
-    outline: none;
-    box-shadow: 0 0 0 2px var(--accent-gold);
-  }
-  
-  .vs-badge {
-    background: linear-gradient(90deg, var(--accent-gold) 0%, var(--accent-orange) 100%);
-    color: #181818;
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 1.3rem;
-    box-shadow: 0 2px 12px #ffb30044;
-    letter-spacing: 1px;
-    border: 2px solid var(--accent-orange);
-  }
-  
-  /* Role Battle */
-  .role-battle-container {
-    background: var(--bg-secondary);
-    border-radius: 16px;
-    padding: 2rem;
-    margin: 2rem 0;
-    box-shadow: var(--card-shadow);
-    border: 2px solid var(--accent-gold);
-  }
-  
-  .role-title {
-    text-align: center;
-    font-size: 1.7rem;
-    margin-bottom: 2rem;
-    color: var(--accent-gold);
-    letter-spacing: 1px;
-    text-shadow: 0 2px 8px #ffb30044;
-  }
-  
-  .role-battle-players {
-    display: flex;
-    flex-direction: row;
-    gap: 2.5rem;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
-  }
-  
-  .role-battle-players::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(180deg, var(--accent-gold) 0%, var(--accent-orange) 100%);
-    border-radius: 2px;
-    box-shadow: 0 0 16px #ffb30088;
-    z-index: 1;
-  }
-  
-  .team-players {
-    flex: 1 1 0;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-  }
-  
-  .team-players h3 {
-    text-align: center;
-    font-size: 2rem;
-    color: var(--accent-gold);
-    letter-spacing: 2px;
-    margin-bottom: 1.2rem;
-    text-shadow: 0 2px 12px #ffb30055;
-    font-weight: 900;
-    text-transform: uppercase;
-  }
-  
-  .vs-divider-badge {
-    position: absolute;
-    left: 50%;
-    top: 16px;
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, var(--accent-gold) 0%, var(--accent-orange) 100%);
-    color: #181818;
-    font-weight: bold;
-    font-size: 1.5rem;
-    padding: 0.5rem 1.5rem;
-    border-radius: 30px;
-    box-shadow: 0 2px 12px #ffb30055;
-    letter-spacing: 2px;
-    z-index: 3;
-    border: 2px solid var(--accent-orange);
-    text-shadow: 0 2px 8px #ffb30044;
-    pointer-events: none;
-  }
-  
-  .players-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .player-card {
-    background: linear-gradient(135deg, #232323 60%, #181818 100%);
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 16px #ffb30022, 0 1.5px 8px 0 #000a;
-    border: 2px solid var(--accent-gold);
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-    animation: slideIn 0.5s cubic-bezier(.4,2,.6,1);
-  }
-  
-  .player-card:hover {
-    transform: translateY(-7px) scale(1.03);
-    box-shadow: 0 4px 32px #ffb30055, 0 1.5px 8px 0 #000a;
-    border-color: var(--accent-orange);
-  }
-  
-  .player-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .player-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--accent-gold);
-  }
-  
-  .player-role {
-    color: var(--accent-orange);
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-  
-  .player-stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .stat {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-  
-  .stat i {
-    color: var(--accent-gold);
-  }
-  
-  .vote-btn {
-    background: linear-gradient(90deg, var(--accent-gold) 0%, var(--accent-orange) 100%);
-    color: #181818;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    margin-top: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    font-weight: bold;
-    box-shadow: 0 2px 8px #ffb30033;
-    letter-spacing: 1px;
-  }
-  
-  .vote-btn:hover {
-    background: linear-gradient(90deg, var(--accent-orange) 0%, var(--accent-gold) 100%);
-    color: #fff;
-    box-shadow: 0 4px 16px #ffb30077;
-  }
-  
-  .vote-btn i {
-    font-size: 1.1rem;
-  }
-  
-  /* Role Battle Summary */
-  .role-battle-summary {
-    background: var(--bg-secondary);
-    border-radius: 16px;
-    padding: 2rem;
-    margin: 2rem 0;
-    box-shadow: var(--card-shadow);
-    border: 2px solid var(--accent-gold);
-  }
-  
-  .role-result {
-    background: linear-gradient(90deg, #232323 60%, #181818 100%);
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 2px solid var(--accent-orange);
-    box-shadow: 0 2px 8px #ffb30022;
-  }
-  
-  .role-result h3 {
-    color: var(--accent-gold);
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
-  }
-  
-  /* Scouting Mode */
-  .scouting-container {
-    background: var(--bg-secondary);
-    border-radius: 16px;
-    padding: 2rem;
-    margin: 2rem 0;
-    box-shadow: var(--card-shadow);
-    border: 2px solid var(--accent-gold);
-  }
-  
-  .scouting-players-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .player-rating {
-    margin-top: 1rem;
-    color: var(--accent-gold);
-    text-shadow: 0 1px 4px #ffb30055;
-  }
-  
-  .stars {
-    font-size: 1.2rem;
-  }
-  
-  /* Dream Team */
-  .dream-team {
-    background: var(--bg-secondary);
-    border-radius: 16px;
-    padding: 2rem;
-    margin: 2rem 0;
-    box-shadow: var(--card-shadow);
-    border: 2px solid var(--accent-orange);
-  }
-  
-  .dream-team-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-  
-  /* Theme Toggle */
-  .theme-toggle {
-    background: none;
-    border: none;
-    color: var(--accent-gold);
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: background 0.2s, color 0.2s;
-    box-shadow: 0 2px 8px #ffb30022;
-  }
-  
-  .theme-toggle:hover {
-    background: var(--accent-dark);
-    color: var(--accent-orange);
-  }
-  
-  /* Animations */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  @keyframes slideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  
-  .player-card {
-    animation: slideIn 0.5s cubic-bezier(.4,2,.6,1);
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-    }
-  
-    .header-content {
-      flex-direction: column;
-      gap: 1rem;
-      text-align: center;
-    }
-  
-    .team-selectors {
-      flex-direction: column;
-      gap: 1rem;
-    }
-  
-    .team-select {
-      width: 100%;
-    }
-  
-    .players-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    .player-stats {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  @media (max-width: 900px) {
-    .role-battle-players {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    .role-battle-players::before, .vs-divider-badge {
-      display: none;
-    }
-    .team-players {
-      width: 100%;
-    }
-  }
-  
-  /* Loading Animation */
-  .loading {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border: 3px solid var(--bg-secondary);
-    border-radius: 50%;
-    border-top-color: var(--accent-gold);
-    animation: spin 1s ease-in-out infinite;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
-  /* Vote Animation */
-  @keyframes votePulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-  }
-  
-  .voted {
-    animation: votePulse 0.3s ease-in-out;
-    box-shadow: 0 0 16px #ffb30099;
-    border-color: var(--accent-orange) !important;
-  }
-  
-  /* Custom Scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: var(--bg-secondary);
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: var(--accent-gold);
-    border-radius: 4px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-orange);
-  }
-  
-  /* HERO BANNER & TEXTURE */
-  .hero-bg-texture {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    pointer-events: none;
-    z-index: 0;
-    background: repeating-linear-gradient(135deg, #ffb30011 0 2px, transparent 2px 40px), repeating-linear-gradient(-135deg, #ff6f0011 0 2px, transparent 2px 40px);
-    opacity: 0.25;
-    mix-blend-mode: lighten;
-  }
-  
-  .hero-banner {
-    position: relative;
-    z-index: 1;
-    background: linear-gradient(90deg, #181818 60%, #232323 100%);
-    padding: 3.5rem 0 2.5rem 0;
-    text-align: center;
-    box-shadow: 0 8px 32px #ffb30022;
-    border-bottom: 2px solid var(--accent-gold);
-    margin-bottom: 2rem;
-    animation: fadeIn 1.2s cubic-bezier(.4,2,.6,1);
-  }
-  
-  .hero-content {
-    max-width: 700px;
-    margin: 0 auto;
-    position: relative;
-  }
-  
-  .hero-badges {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1.2rem;
-  }
-  
-  .live-badge {
-    background: linear-gradient(90deg, #e53935 60%, #ffb300 100%);
-    color: #fff;
-    font-weight: bold;
-    padding: 0.4rem 1.1rem;
-    border-radius: 20px;
-    font-size: 1rem;
-    letter-spacing: 2px;
-    box-shadow: 0 2px 12px #e5393555;
-    text-shadow: 0 1px 4px #e53935cc;
-    border: 2px solid #e53935;
-    animation: pulseLive 1.2s infinite alternate;
-  }
-  
-  @keyframes pulseLive {
-    0% { box-shadow: 0 0 8px #e53935cc; }
-    100% { box-shadow: 0 0 24px #ffb300cc; }
-  }
-  
-  .official-badge {
-    background: linear-gradient(90deg, #ffb300 60%, #ff6f00 100%);
-    color: #181818;
-    font-weight: bold;
-    padding: 0.4rem 1.1rem;
-    border-radius: 20px;
-    font-size: 1rem;
-    letter-spacing: 2px;
-    box-shadow: 0 2px 12px #ffb30055;
-    text-shadow: 0 1px 4px #ffb300cc;
-    border: 2px solid #ffb300;
-  }
-  
-  .hero-title {
-    font-size: 2.7rem;
-    font-weight: 900;
-    color: var(--accent-gold);
-    letter-spacing: 3px;
-    text-shadow: 0 4px 24px #ffb30099, 0 2px 8px #ff6f0044;
-    margin-bottom: 0.7rem;
-    animation: glowTitle 2s infinite alternate;
-  }
-  
-  @keyframes glowTitle {
-    0% { text-shadow: 0 4px 24px #ffb30099, 0 2px 8px #ff6f0044; }
-    100% { text-shadow: 0 8px 32px #ffb300cc, 0 4px 16px #ff6f0088; }
-  }
-  
-  .hero-subtitle {
-    color: var(--accent-orange);
-    font-size: 1.3rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    margin-bottom: 0;
-    text-shadow: 0 2px 8px #ffb30044;
-    animation: fadeIn 2s 0.5s backwards;
-  }
-  
-  .logo-img {
-    height: 40px;
-    margin-right: 0.5rem;
-    filter: drop-shadow(0 0 8px #ffb30088);
-    vertical-align: middle;
-  }
-  
-  /* FOOTER SOCIAL & CREDITS */
-  .footer {
-    background: #181818;
-    border-top: 2px solid var(--accent-gold);
-    padding: 2rem 0 1rem 0;
-    margin-top: 3rem;
-    box-shadow: 0 -2px 16px #ffb30022;
-  }
-  .footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-  }
-  .footer-social {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-  .footer-social-link {
-    color: var(--accent-gold);
-    font-size: 2rem;
-    transition: color 0.2s, text-shadow 0.2s;
-    text-shadow: 0 2px 8px #ffb30044;
-  }
-  .footer-social-link:hover {
-    color: var(--accent-orange);
-    text-shadow: 0 4px 16px #ffb30099;
-  }
-  .footer p {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    letter-spacing: 1px;
-    text-align: center;
-  }
-  
-  /* Animazioni fade/slide per sezioni principali */
-  main.container, .role-battle-container, .scouting-container, .dream-team, .role-battle-summary {
-    animation: fadeIn 1.2s cubic-bezier(.4,2,.6,1);
-  }
-  
-  /* Responsive migliorato per hero e footer */
-  @media (max-width: 768px) {
-    .hero-title { font-size: 1.5rem; }
-    .hero-banner { padding: 2rem 0 1.2rem 0; }
-    .footer-content { gap: 0.7rem; }
-    .footer-social-link { font-size: 1.4rem; }
-  }
-  
+/* -----------------------
+   Palette & Reset
+----------------------- */
+:root{
+    --bg-primary:#181818;
+    --bg-secondary:#232323;
+    --text-primary:#f7f7f7;
+    --text-secondary:#b3b3b3;
+    --accent-gold:#ffb300;
+    --accent-orange:#ff6f00;
+    --accent-dark:#111;
+    --card-shadow:0 4px 24px rgba(255,179,0,.08),0 1.5px 8px rgba(0,0,0,.5);
+    --transition:.25s;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+body{background:linear-gradient(135deg,#181818 0%,#232323 100%);color:var(--text-primary);line-height:1.6;}
+
+/* header / hero */
+.header{background:var(--bg-secondary);padding:1rem 0;box-shadow:var(--card-shadow);position:sticky;top:0;z-index:10;border-bottom:2px solid var(--accent-gold)}
+.header-content{max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:1.6rem;font-weight:700;color:var(--accent-gold);text-decoration:none;letter-spacing:2px}
+.theme-toggle{background:none;border:none;color:var(--accent-gold);font-size:1.4rem;cursor:pointer}
+
+.hero-banner{background:linear-gradient(90deg,#181818 60%,#232323 100%);padding:3rem 0;text-align:center;border-bottom:2px solid var(--accent-gold)}
+.hero-title{font-size:2.5rem;font-weight:900;color:var(--accent-gold);letter-spacing:3px;margin-bottom:.5rem}
+.hero-subtitle{color:var(--accent-orange);font-size:1.2rem}
+
+.container{max-width:1200px;margin:0 auto;padding:2rem}
+
+/* mode selector */
+.mode-selector{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.mode-btn{border:2px solid var(--accent-gold);background:var(--bg-secondary);color:var(--accent-gold);padding:.6rem 1.2rem;border-radius:8px;font-weight:600;cursor:pointer;transition:background var(--transition)}
+.mode-btn.active,.mode-btn:hover{background:linear-gradient(90deg,var(--accent-gold)0%,var(--accent-orange)100%);color:#181818}
+
+.mode-title{text-align:center;font-size:1.8rem;margin:1.5rem 0;color:var(--accent-gold)}
+
+/* selectors */
+.team-selectors{display:flex;justify-content:center;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.team-select{min-width:180px;padding:.7rem;border:2px solid var(--accent-gold);border-radius:8px;background:var(--bg-secondary);color:var(--text-primary);cursor:pointer}
+.vs-badge{background:linear-gradient(90deg,var(--accent-gold)0%,var(--accent-orange)100%);color:#181818;padding:.5rem 1rem;border-radius:20px;font-weight:700}
+
+/* cards */
+.players-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem}
+.player-card{background:linear-gradient(135deg,#232323 60%,#181818 100%);border:2px solid var(--accent-gold);border-radius:10px;box-shadow:var(--card-shadow);padding:1.2rem;display:flex;flex-direction:column;gap:1rem;transition:transform var(--transition)}
+.player-card:hover{transform:translateY(-6px) scale(1.03);border-color:var(--accent-orange)}
+
+.player-name{font-weight:700;color:var(--accent-gold)}
+.player-role{color:var(--accent-orange);font-weight:600}
+.player-stats{display:flex;flex-wrap:wrap;gap:.4rem;font-size:.9rem;color:var(--text-secondary)}
+
+/* vote button */
+.vote-btn{margin-top:auto;background:linear-gradient(90deg,var(--accent-gold)0%,var(--accent-orange)100%);color:#181818;border:none;border-radius:6px;padding:.6rem 1rem;font-weight:700;cursor:pointer;transition:box-shadow var(--transition)}
+.vote-btn:hover{box-shadow:0 0 12px rgba(255,179,0,.6)}
+.voted{animation:votePulse .3s ease-in-out;border:2px solid var(--accent-orange)!important;box-shadow:0 0 16px rgba(255,179,0,.8)}
+@keyframes votePulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+
+/* role battle layout */
+.role-battle-players{display:flex;gap:2rem;position:relative}
+.role-battle-players::before{content:'';position:absolute;left:50%;top:0;transform:translateX(-50%);width:4px;height:100%;background:linear-gradient(180deg,var(--accent-gold)0%,var(--accent-orange)100%);border-radius:2px}
+.team-players{flex:1 1 0}
+.team-players h3{text-align:center;font-size:1.6rem;color:var(--accent-gold);margin-bottom:1rem}
+
+/* summary */
+.role-battle-summary{background:var(--bg-secondary);border:2px solid var(--accent-gold);border-radius:10px;padding:1.5rem;margin-top:2rem;box-shadow:var(--card-shadow)}
+.role-result{background:linear-gradient(135deg,#232323 60%,#181818 100%);border:2px solid var(--accent-orange);border-radius:8px;padding:1rem;margin-bottom:1rem}
+
+/* responsive */
+@media(max-width:900px){
+    .role-battle-players{flex-direction:column}
+    .role-battle-players::before{display:none}
+}
