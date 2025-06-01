@@ -459,240 +459,182 @@ const teams = {
     ]
   };
   
-  // Stato dell’applicazione
-let currentMode = 'view'; // 'view', 'compare' o 'scouting'
-let selectedTeams = { team1: null, team2: null };
-let currentRoleIndex = 0; // Per ciclare i ruoli in modalità scouting
 
-/***************************
- * Funzioni di utilità UI  *
- ***************************/
+/***** STATO *****/
+let currentMode   = "view";        // view | compare | scouting
+let selectedTeams = { team1:null, team2:null };
+let selectedRole  = "";            // POR, DIF, CEN, ATT
+const votes       = {};            // { battleId : playerName }
+let currentRoleIndex = 0;          // per lo scouting
 
-function clearChildren(el) {
-    while (el.firstChild) el.removeChild(el.firstChild);
-}
+/***** UTILITIES *****/
+function $(id){ return document.getElementById(id); }
+function clear(el){ while(el.firstChild) el.removeChild(el.firstChild); }
 
-function createPlayerCard(player) {
-    const card = document.createElement('div');
-    card.className = 'player-card';
-
-    const name = document.createElement('h3');
-    name.textContent = player.nome;
-
-    const details = document.createElement('p');
-    details.textContent = `Ruolo: ${player.ruolo}\nEtà: ${player.età ?? 'N/A'}\nAltezza: ${player.altezza ?? 'N/A'}\nGoal: ${player.goal}\nAssist: ${player.assist}\nGialli: ${player.cartellini_gialli}\nRossi: ${player.cartellini_rossi}`;
-
-    card.appendChild(name);
-    card.appendChild(details);
-
+function createPlayerCard(player){
+    const card = document.createElement("div");
+    card.className = "player-card";
+    card.innerHTML = `
+        <div class="player-header">
+            <span class="player-name">${player.nome}</span>
+            <span class="player-role">${player.ruolo}</span>
+        </div>
+        <div class="player-stats">
+            <span class="stat"><i class="fas fa-futbol"></i>&nbsp;${player.goal}</span>
+            <span class="stat"><i class="fas fa-hands-helping"></i>&nbsp;${player.assist}</span>
+            <span class="stat"><i class="fas fa-square"></i>&nbsp;${player.gialli}</span>
+            <span class="stat"><i class="fas fa-square-full"></i>&nbsp;${player.rossi}</span>
+        </div>
+    `;
     return card;
 }
 
-/***********************************
- * Popola le select delle squadre   *
- ***********************************/
-function populateTeamSelects() {
-    const team1Select = document.getElementById('team1-select');
-    const team2Select = document.getElementById('team2-select');
-
-    clearChildren(team1Select);
-    clearChildren(team2Select);
-
-    const placeholderOption1 = document.createElement('option');
-    placeholderOption1.value = '';
-    placeholderOption1.textContent = '-- Seleziona squadra --';
-    const placeholderOption2 = placeholderOption1.cloneNode(true);
-
-    team1Select.appendChild(placeholderOption1);
-    team2Select.appendChild(placeholderOption2);
-
-    Object.keys(teams).forEach(teamName => {
-        const option1 = document.createElement('option');
-        option1.value = teamName;
-        option1.textContent = teamName;
-
-        const option2 = option1.cloneNode(true);
-
-        team1Select.appendChild(option1);
-        team2Select.appendChild(option2);
+/***** POPOLA SELECT SQUADRE *****/
+function populateTeamSelects(){
+    ["team1-select","team2-select"].forEach(id=>{
+        const sel = $(id);
+        sel.innerHTML = '<option value="">-- Seleziona squadra --</option>';
+        Object.keys(teams).forEach(team=>{
+            const opt = document.createElement("option");
+            opt.value = team; opt.textContent = team;
+            sel.appendChild(opt);
+        });
     });
 }
 
-/*****************************************
- * Gestione cambio modalità (view/compare/scouting)
- *****************************************/
-function setMode(mode) {
-  currentMode = mode;
+/***** GESTIONE MODALITÀ *****/
+function setMode(mode){
+    currentMode = mode;
+    $("mode-title").textContent =
+          mode==="view"    ? "Rosa Squadra"
+        : mode==="compare" ? "Role Battle"
+        :                    "Scouting";
 
-  // Titolo della sezione
-  document.getElementById('mode-title').textContent =
-    mode === 'view'    ? 'Rosa Squadra'       :
-    mode === 'compare' ? 'Confronto Squadre'  :
-                         'Scouting';
+    $("roster" ).style.display = mode==="view"    ? "block":"none";
+    $("compare").style.display = mode==="compare" ? "block":"none";
+    $("scouting").style.display= mode==="scouting"? "block":"none";
 
-  /*  NEW: visibilità pannelli  */
-  document.getElementById('roster'  ).style.display = mode === 'view'    ? 'block' : 'none';
-  document.getElementById('compare' ).style.display = mode === 'compare' ? 'block' : 'none';
-  document.getElementById('scouting').style.display = mode === 'scouting'? 'block' : 'none';
-
-  // Controlli extra per lo scouting
-  if (mode === 'scouting') {
-    currentRoleIndex = 0;
-    document.getElementById('scouting-controls').style.display = 'block';
-  } else {
-    document.getElementById('scouting-controls').style.display = 'none';
-  }
-
-  render();   // ridisegna la vista corrente
+    if(mode!=="scouting") $("scouting-players-list").innerHTML="";
+    render();
 }
 
-/********************
- * Rendering principali
- ********************/
-function render() {
-    if (currentMode === 'view') renderTeamRoster();
-    else if (currentMode === 'compare') renderComparison();
-    else if (currentMode === 'scouting') renderScouting();
+/***** RENDERING ROOT *****/
+function render(){
+    if(currentMode==="view")     renderTeamRoster();
+    else if(currentMode==="compare") renderRoleBattle();
+    else if(currentMode==="scouting") renderScouting();
 }
 
-/***************************
- * Modalità VIEW – Rosa squadra
- ***************************/
-function renderTeamRoster() {
-    const rosterContainer = document.getElementById('roster');
-    clearChildren(rosterContainer);
+/***** ROSA *****/
+function renderTeamRoster(){
+    const c = $("roster"); clear(c);
+    if(!selectedTeams.team1) { c.textContent = "Seleziona una squadra…"; return; }
+    teams[selectedTeams.team1].forEach(p=>c.appendChild(createPlayerCard(p)));
+}
 
-    if (!selectedTeams.team1) {
-        rosterContainer.textContent = 'Seleziona una squadra per vedere la rosa.';
+/***** ROLE BATTLE *****/
+function renderRoleBattle(){
+    const c = $("compare"); clear(c);
+
+    if(!selectedTeams.team1 || !selectedTeams.team2 || !selectedRole){
+        c.textContent = "Seleziona due squadre e un ruolo.";
         return;
     }
 
-    teams[selectedTeams.team1].forEach(player => {
-        rosterContainer.appendChild(createPlayerCard(player));
+    const data = [selectedTeams.team1, selectedTeams.team2].map(name=>({
+        name,
+        players: teams[name].filter(p=>p.ruolo===selectedRole)
+    }));
+
+    const wrap = document.createElement("div");
+    wrap.className = "role-battle-players";
+
+    data.forEach(team=>{
+        const col = document.createElement("div");
+        col.className="team-players";
+        col.innerHTML = `<h3>${team.name}</h3>`;
+        const grid = document.createElement("div");
+        grid.className = "players-grid";
+
+        team.players.forEach(pl=>{
+            const card = createPlayerCard(pl);
+            const btn  = document.createElement("button");
+            btn.className="vote-btn";
+            btn.innerHTML = '<i class="fas fa-thumbs-up"></i>&nbsp;Vota';
+            btn.onclick = ()=>handleVote(team.name,pl,btn);
+            card.appendChild(btn);
+            grid.appendChild(card);
+        });
+        col.appendChild(grid);
+        wrap.appendChild(col);
+    });
+
+    c.appendChild(wrap);
+}
+
+function handleVote(team,player,btn){
+    const battleId = `${selectedTeams.team1}|${selectedTeams.team2}|${selectedRole}`;
+    if(votes[battleId]) return;
+    votes[battleId] = player.nome;
+    btn.classList.add("voted");
+    btn.textContent = "Votato!";
+    showBattleSummary(battleId,player.nome);
+}
+
+function showBattleSummary(id,playerName){
+    $("role-battle-summary").style.display="block";
+    const div = document.createElement("div");
+    div.className="role-result";
+    div.innerHTML = `<h3>${selectedRole}</h3><p>Migliore: <strong>${playerName}</strong></p>`;
+    $("role-battle-summary-list").appendChild(div);
+}
+
+/***** SCOUTING (dimostrativo) *****/
+function renderScouting(){
+    const c = $("scouting-players-list"); clear(c);
+    if(!selectedTeams.team1 || !selectedTeams.team2){
+        c.textContent = "Seleziona due squadre…"; return;
+    }
+    const roles = ["POR","DIF","CEN","ATT"];
+    const role = roles[currentRoleIndex%roles.length];
+    ["team1","team2"].forEach(key=>{
+        teams[selectedTeams[key]].filter(p=>p.ruolo===role)
+            .forEach(p=>c.appendChild(createPlayerCard(p)));
     });
 }
+function nextRole(){ currentRoleIndex++; renderScouting(); }
 
-/*****************************
- * Modalità COMPARE – Confronto
- *****************************/
-function renderComparison() {
-    const compareContainer = document.getElementById('compare');
-    clearChildren(compareContainer);
-
-    if (!selectedTeams.team1 || !selectedTeams.team2) {
-        compareContainer.textContent = 'Seleziona entrambe le squadre per confrontarle.';
-        return;
-    }
-
-    const team1 = teams[selectedTeams.team1];
-    const team2 = teams[selectedTeams.team2];
-
-    const metrics = ['goal', 'assist', 'cartellini_gialli', 'cartellini_rossi'];
-
-    metrics.forEach(metric => {
-        const section = document.createElement('section');
-        const title = document.createElement('h3');
-        title.textContent = metric.replace('_', ' ').toUpperCase();
-        section.appendChild(title);
-
-        const value1 = team1.reduce((sum, p) => sum + p[metric], 0);
-        const value2 = team2.reduce((sum, p) => sum + p[metric], 0);
-
-        const p1 = document.createElement('p');
-        p1.textContent = `${selectedTeams.team1}: ${value1}`;
-        const p2 = document.createElement('p');
-        p2.textContent = `${selectedTeams.team2}: ${value2}`;
-
-        section.appendChild(p1);
-        section.appendChild(p2);
-
-        compareContainer.appendChild(section);
-    });
+/***** EVENT HANDLERS *****/
+function handleTeamSelection(){
+    selectedTeams.team1 = $("team1-select").value;
+    selectedTeams.team2 = $("team2-select").value;
+    render();
+}
+function handleRoleSelection(){
+    selectedRole = $("role-select").value;
+    if(currentMode==="compare") renderRoleBattle();
 }
 
-/*******************************
- * Modalità SCOUTING – Ciclo ruoli
- *******************************/
-function renderScouting() {
-    const scoutingContainer = document.getElementById('scouting');
-    clearChildren(scoutingContainer);
-
-    if (!selectedTeams.team1 || !selectedTeams.team2) {
-        scoutingContainer.textContent = 'Seleziona entrambe le squadre per effettuare scouting.';
-        return;
-    }
-
-    const team1 = teams[selectedTeams.team1];
-    const team2 = teams[selectedTeams.team2];
-
-    if (!team1 || !team2) return;
-  
-    const roles = [...new Set([...team1, ...team2].map(p => p.ruolo))];
-    
-    if (currentRoleIndex >= roles.length) {
-      currentRoleIndex = 0; // ricomincia dal primo ruolo se abbiamo finito il ciclo
-    }
-
-    const currentRole = roles[currentRoleIndex];
-
-    const rolePlayers = [
-        ...team1.filter(p => p.ruolo === currentRole),
-        ...team2.filter(p => p.ruolo === currentRole)
-    ];
-
-    if (rolePlayers.length === 0) {
-        scoutingContainer.textContent = `Nessun giocatore trovato per il ruolo ${currentRole}.`;
-        return;
-    }
-
-    const title = document.createElement('h3');
-    title.textContent = `Ruolo: ${currentRole}`;
-    scoutingContainer.appendChild(title);
-
-    rolePlayers.forEach(player => scoutingContainer.appendChild(createPlayerCard(player)));
-}
-
-/*************************
- * Eventi UI
- *************************/
-function handleTeamSelection() {
-    const team1Select = document.getElementById('team1-select');
-    const team2Select = document.getElementById('team2-select');
-
-    selectedTeams.team1 = team1Select.value;
-    selectedTeams.team2 = team2Select.value;
-  
-    if (selectedTeams.team1 && selectedTeams.team2) {
-      if (currentMode === 'compare') {
-        renderComparison();
-      } else if (currentMode === 'scouting') {
-        renderScouting();
-      }
-    } else {
-      render();
-    }
-}
-
-function nextRole() {
-    currentRoleIndex += 1;
-    renderScouting();
-}
-
-/***********************
- * Inizializzazione
- ***********************/
-function init() {
+/***** INIT *****/
+function init(){
     populateTeamSelects();
 
-    document.getElementById('view-btn').addEventListener('click', () => setMode('view'));
-    document.getElementById('compare-btn').addEventListener('click', () => setMode('compare'));
-    document.getElementById('scouting-btn').addEventListener('click', () => setMode('scouting'));
-    document.getElementById('team1-select').addEventListener('change', handleTeamSelection);
-    document.getElementById('team2-select').addEventListener('change', handleTeamSelection);
-    document.getElementById('next-role-btn').addEventListener('click', nextRole);
+    $("view-btn").onclick    = ()=>setMode("view");
+    $("compare-btn").onclick = ()=>setMode("compare");
+    $("scouting-btn").onclick= ()=>setMode("scouting");
 
-    setMode('view');
+    $("team1-select").onchange = handleTeamSelection;
+    $("team2-select").onchange = handleTeamSelection;
+    $("role-select").onchange  = handleRoleSelection;
+
+    $("next-role-btn").onclick = nextRole;
+    $("restartRoleBattle").onclick = ()=>{
+        Object.keys(votes).forEach(k=>delete votes[k]);
+        $("role-battle-summary-list").innerHTML="";
+        $("role-battle-summary").style.display="none";
+        renderRoleBattle();
+    };
+
+    setMode("view");
 }
-
-// Avvia tutto quando il DOM è pronto
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener("DOMContentLoaded",init);
