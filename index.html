@@ -15,8 +15,8 @@
             <a href="#" class="logo">
                 KWCC
             </a>
-            <div class="header-controls">
-                <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()">
+            <div class="header-actions">
+                <button id="themeToggle" class="theme-toggle">
                     <i class="fas fa-moon"></i>
                 </button>
             </div>
@@ -32,25 +32,37 @@
 
     <main class="container">
         <section class="mode-selector">
-            <button id="modeCompare" class="mode-btn active">
+            <button id="view-btn" class="mode-btn active">
+                <i class="fas fa-clipboard-list"></i> Rosa
+            </button>
+            <button id="compare-btn" class="mode-btn">
                 <i class="fas fa-users"></i> Confronto Ruoli
             </button>
-            <button id="modeScouting" class="mode-btn">
+            <button id="scouting-btn" class="mode-btn">
                 <i class="fas fa-search"></i> Scouting
             </button>
         </section>
+        <h2 id="mode-title" class="mode-title">Rosa Squadra</h2>
 
         <section class="team-selectors">
-            <select id="team1" class="team-select">
+            <select id="team1-select" class="team-select">
                 <option value="">Seleziona squadra 1</option>
             </select>
             <div class="vs-badge">VS</div>
-            <select id="team2" class="team-select">
+            <select id="team2-select" class="team-select">
                 <option value="">Seleziona squadra 2</option>
             </select>
         </section>
+        <!-- Container per modalità View: Rosa Squadra -->
+        <section id="roster" class="roster-container" style="display: none;"></section>
+        <!-- Container per modalità Compare: Confronto Squadre -->
+        <section id="compare" class="compare-container" style="display: none;"></section>
+        <!-- Controlli Scouting (Next Role) -->
+        <div id="scouting-controls" style="display:none;">
+            <button id="next-role-btn">Ruolo successivo</button>
+        </div>
 
-        <!-- Modalità Confronto Ruoli -->
+        <!-- Modalità Confronto Ruoli (non più usata ma tenuta per compatibilità) -->
         <section id="role-battle-container" class="role-battle-container" style="display: none;">
             <h2 id="current-role-title" class="role-title">Seleziona le squadre per iniziare</h2>
             <div id="role-battle-players" class="role-battle-players"></div>
@@ -66,10 +78,10 @@
         </section>
 
         <!-- Modalità Scouting -->
-        <section id="scouting-container" class="scouting-container" style="display: none;">
+        <section id="scouting" class="scouting-container" style="display: none;">
             <h2>Scouting Giocatori</h2>
             <div id="scouting-players-list" class="scouting-players-list"></div>
-            
+
             <section class="dream-team">
                 <h2>La Tua Squadra Ideale</h2>
                 <div id="dream-team-list" class="dream-team-list"></div>
